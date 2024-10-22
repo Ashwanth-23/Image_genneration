@@ -10,18 +10,21 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             background-color: #f0f0f0;
+            margin: 0;
         }
         .container {
             background-color: white;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 400px;
+            width: 100%;
+            max-width: 600px;
         }
         h2 {
             text-align: center;
+            margin-bottom: 20px;
         }
         .input-group {
             margin-bottom: 15px;
@@ -29,8 +32,7 @@
         label {
             font-weight: bold;
         }
-        input[type="text"],
-        input[type="number"],
+        textarea,
         select {
             width: 100%;
             padding: 10px;
@@ -38,9 +40,12 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
+        textarea {
+            height: 120px;
+        }
         button {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             background-color: #28a745;
             color: white;
             border: none;
@@ -50,20 +55,30 @@
         button:hover {
             background-color: #218838;
         }
+        #loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
         img {
             display: block;
             margin: 20px auto;
             max-width: 100%;
         }
     </style>
+    <script>
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+        }
+    </script>
 </head>
 <body>
     <div class="container">
         <h2>Generate Image</h2>
-        <form method="POST" action="/">
+        <form method="POST" action="/" onsubmit="showLoading()">
             <div class="input-group">
                 <label for="prompt">Prompt</label>
-                <input type="text" id="prompt" name="prompt" placeholder="Enter image prompt" required>
+                <textarea id="prompt" name="prompt" placeholder="Enter image prompt" required></textarea>
             </div>
             <div class="input-group">
                 <label for="aspect_ratio">Aspect Ratio</label>
@@ -79,10 +94,9 @@
             </div>
             <button type="submit">Generate</button>
         </form>
-        {% if image_url %}
-        <h3>Generated Image:</h3>
-        <img src="{{ image_url }}" alt="Generated Image">
-        {% endif %}
+        <div id="loading">
+            <p>Loading...</p>
+        </div>
     </div>
 </body>
 </html>
